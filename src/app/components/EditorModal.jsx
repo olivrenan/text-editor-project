@@ -8,8 +8,8 @@ import isHotkey from "is-hotkey";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { addNewTodo } from "../store/actions";
-import { ELEMENT_TAGS, HOTKEYS, TEXT_TAGS } from "../helpers/Keys";
 import { BlockButton, MarkButton } from "../helpers/Toggle";
+import { ELEMENT_TAGS, HOTKEYS, TEXT_TAGS } from "../helpers/Keys";
 import Element from "./Element";
 import Leaf from "./Leaf";
 import Toolbar from "./Toolbar";
