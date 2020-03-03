@@ -11,7 +11,7 @@
     user-select: none;
 
     h1 {
-      font-kerning: 5px;
+      padding: 3rem;
     }
   }
 
@@ -25,9 +25,11 @@
 
     .action-button {
       background-color: $light-grey;
-      border-radius: 20px;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
       border: none;
-      bottom: 10rem;
+      bottom: 6rem;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
       color: #fff;
       cursor: pointer;
