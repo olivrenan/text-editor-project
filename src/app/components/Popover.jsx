@@ -4,6 +4,11 @@ const PopOver = ({ actionsArray, listChildren, icon }) => {
   const [display, setDisplay] = useState(false);
 
   const Options = () => {
+    const handleClick = index => {
+      actionsArray[index]();
+      setDisplay(false);
+    };
+
     return (
       <div className="pop-over-wrap">
         <div
@@ -15,7 +20,7 @@ const PopOver = ({ actionsArray, listChildren, icon }) => {
             <div
               key={index}
               className="pop-over-option"
-              onClick={actionsArray[index]}
+              onClick={() => handleClick(index)}
             >
               {children}
             </div>

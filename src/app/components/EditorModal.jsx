@@ -7,7 +7,7 @@ import { withHistory } from "slate-history";
 import isHotkey from "is-hotkey";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import { addNewTodo } from "../store/actions";
+import { addNewTodo, updateTodo } from "../store/actions";
 import { BlockButton, MarkButton } from "../helpers/Toggle";
 import { ELEMENT_TAGS, HOTKEYS, TEXT_TAGS } from "../helpers/Keys";
 import Element from "./Element";
@@ -84,14 +84,22 @@ const withHtml = editor => {
   return editor;
 };
 
-const EditorModal = ({ handleClose, addNewTodo }) => {
+const EditorModal = ({
+  handleClose,
+  addNewTodo,
+  updateTodo,
+  initialValue,
+  updateEnable = false
+}) => {
   const [isMounted, setIsMounted] = useState();
-  const [value, setValue] = useState([
-    {
-      type: "paragraph",
-      children: [{ text: "Enter some text…" }]
-    }
-  ]);
+  const [value, setValue] = useState(
+    initialValue || [
+      {
+        type: "paragraph",
+        children: [{ text: "Enter some text…" }]
+      }
+    ]
+  );
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
   const editor = useMemo(
@@ -120,6 +128,17 @@ const EditorModal = ({ handleClose, addNewTodo }) => {
     } else {
       Editor.addMark(editor, format, true);
     }
+  };
+
+  const handleAction = () => {
+    if (updateEnable) updateTodo(value);
+    else addNewTodo(value);
+    handleClose();
+  };
+
+  const ButtonTag = () => {
+    if (updateEnable) return "Update todo";
+    return "Add Todo";
   };
 
   return (
@@ -156,14 +175,8 @@ const EditorModal = ({ handleClose, addNewTodo }) => {
             });
           }}
         />
-        <button
-          className="add-button"
-          onClick={() => {
-            addNewTodo(value);
-            handleClose();
-          }}
-        >
-          Add Note
+        <button className="add-button" onClick={() => handleAction()}>
+          <ButtonTag />
         </button>
       </Slate>
     </div>
@@ -171,6 +184,6 @@ const EditorModal = ({ handleClose, addNewTodo }) => {
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ addNewTodo }, dispatch);
+  bindActionCreators({ addNewTodo, updateTodo }, dispatch);
 
 export default connect(null, mapDispatchToProps)(EditorModal);

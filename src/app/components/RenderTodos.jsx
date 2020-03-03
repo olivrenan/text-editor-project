@@ -3,24 +3,39 @@ import { connect } from "react-redux";
 import { createEditor } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
 import { withHistory } from "slate-history";
-import React, { useCallback, useMemo } from "react";
+import Modal from "react-modal";
+import React, { useCallback, useMemo, useState } from "react";
 
 import { deleteTodo } from "../store/actions";
+import EditorModal from "./EditorModal";
 import Element from "./Element";
 import Leaf from "./Leaf";
 import Popover from "./Popover";
 
 const RenderTodos = ({ todo, deleteTodo }) => {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
 
   return (
     <div className="editor">
+      <Modal
+        className="modal"
+        isOpen={modalIsOpen}
+        onRequestClose={() => setIsOpen(false)}
+      >
+        <EditorModal
+          handleClose={() => setIsOpen(false)}
+          initialValue={todo}
+          updateEnable
+        />
+      </Modal>
       <Popover
         icon="more_vert"
         listChildren={["Edit", "Delete"]}
-        actionsArray={[() => {}, () => deleteTodo(todo)]}
+        actionsArray={[() => setIsOpen(true), () => deleteTodo(todo)]}
       />
       <Slate editor={editor} value={todo}>
         <Editable

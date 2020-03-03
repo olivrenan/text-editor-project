@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-import { ADD_TODO, EDIT_TODO, DELETE_TODO } from "./actionTypes";
+import { ADD_TODO, UPDATE_TODO, DELETE_TODO } from "./actionTypes";
 
 const initialState = {
   todos: [
@@ -282,7 +282,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TODO:
       return { ...state, todos: action.todo };
-    case EDIT_TODO:
+    case UPDATE_TODO:
       return { ...state, todos: action.todo };
     case DELETE_TODO:
       return { ...state, todos: action.todo };

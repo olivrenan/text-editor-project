@@ -24,3 +24,21 @@ export const deleteTodo = todo => (dispatch, getState) => {
     todo: newTodos
   });
 };
+
+export const updateTodo = updatedTodo => (dispatch, getState) => {
+  const { todos } = getState();
+
+  let newTodos;
+
+  if (updatedTodo[0].children[0].children[0].text === "")
+    newTodos = [...todos].filter(todo => todo[0].id !== updatedTodo[0].id);
+  else
+    newTodos = [...todos].map(todo =>
+      todo[0].id === updatedTodo[0].id ? updatedTodo : todo
+    );
+
+  dispatch({
+    type: actionTypes.UPDATE_TODO,
+    todo: newTodos
+  });
+};
