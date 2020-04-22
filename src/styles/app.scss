@@ -1,19 +1,9 @@
 .app {
   align-items: center;
+  background-color: $light-grey;
   display: flex;
   flex-direction: column;
-  background-color: $dark-grey;
   min-height: 100vh;
-
-  header {
-    font-size: 2rem;
-    margin: 3rem 0;
-    user-select: none;
-
-    h1 {
-      padding: 3rem;
-    }
-  }
 
   .content {
     .render-todos {
@@ -22,28 +12,29 @@
       padding: 0 4rem;
       margin-bottom: 8rem;
     }
+  }
 
-    .action-button {
-      background-color: $light-grey;
-      width: 5rem;
-      height: 5rem;
-      border-radius: 50%;
-      border: none;
-      bottom: 6rem;
-      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-      color: #fff;
-      cursor: pointer;
-      padding: 0.8rem;
-      position: fixed;
-      right: 10rem;
-      user-select: none;
-      z-index: 1000;
-    }
+  .action-button {
+    background-color: $dark-grey;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    border: 2.5px solid #000;
+    bottom: 6rem;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    color: #fff;
+    cursor: pointer;
+    padding: 0.8rem;
+    position: fixed;
+    right: 10rem;
+    user-select: none;
+    z-index: 1000;
   }
 }
 
 .editor {
   background-color: #fff;
+  border: 2.5px solid #000;
   border-radius: 8px;
   box-shadow: 0.3rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
   display: inline-grid;
