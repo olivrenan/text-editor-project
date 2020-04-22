@@ -1,45 +1,36 @@
 header {
-  background-color: #fff;
-  border-radius: 8px;
-  border: 2.5px solid #000;
+  background-color: $main-color;
+  position: relative;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   font-size: 2rem;
-  align-items: center;
-  margin: 3rem 3rem 3rem 2.5rem;
+  height: 12vh;
+  margin: 0 0 3rem 0;
+  padding: 2rem;
   user-select: none;
-  width: 93.5vw;
-  padding: 2rem 2rem 0 2rem;
-
-  h1,
-  h3 {
-    font-weight: 300;
-  }
+  width: 100vw;
 
   h1 {
-    font-family: "Alex Brush", cursive;
+    font-family: 'Times New Roman', Times, serif;
+    position: relative;
+    font-weight: 300;
+    top: -15px;
+    left: 25px;
     font-size: 6rem;
-    letter-spacing: 1.5rem;
-  }
-
-  h3 {
-    font-size: 2rem;
   }
 
   .app--owner {
-    align-self: flex-end;
+    color: $darker-grey;
     position: relative;
-    right: 10px;
-    bottom: -15px;
+    right: -68rem;
+    top: 7rem;
     font-size: 1rem;
   }
 
   .user-actions {
+    color: $darker-grey;
     display: flex;
-    align-self: flex-end;
-    position: relative;
-    right: 20px;
-    bottom: 160px;
+    margin-right: 2rem;
     font-size: 1.8rem;
 
     p {

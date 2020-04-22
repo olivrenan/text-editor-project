@@ -12,7 +12,6 @@ const App = ({ todos }) => {
     <div className="app">
       <header>
         <h1>Todo List Application</h1>
-        <h3>This is editable rich text, try it out for yourself!</h3>
         <p className="app--owner">© 2020 by Renan Oliveira</p>
         <div className="user-actions">
           <p className="login">Login</p>
