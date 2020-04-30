@@ -4,7 +4,7 @@ header {
   display: flex;
   justify-content: space-between;
   font-size: 2rem;
-  height: 12vh;
+  height: 8vh;
   margin: 0 0 3rem 0;
   padding: 2rem;
   user-select: none;
@@ -16,15 +16,15 @@ header {
     font-weight: 300;
     top: -15px;
     left: 25px;
-    font-size: 6rem;
+    font-size: 4rem;
   }
 
   .app--owner {
     color: $darker-grey;
     position: relative;
-    right: -68rem;
-    top: 7rem;
-    font-size: 1rem;
+    right: -80rem;
+    top: 4.2rem;
+    font-size: 0.8rem;
   }
 
   .user-actions {
