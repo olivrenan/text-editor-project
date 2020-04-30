@@ -1,12 +1,18 @@
 import { connect } from "react-redux";
 import Modal from "react-modal";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { bindActionCreators } from "redux";
 
 import EditorModal from "./components/EditorModal";
 import RenderTodos from "./components/RenderTodos";
+import { requestAPI } from "./store/actions";
 
-const App = ({ todos }) => {
+const App = ({ todos, requestAPI }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    requestAPI();
+  }, []);
 
   return (
     <div className="app">
@@ -44,4 +50,7 @@ const mapStateToProps = ({ todos }) => ({
   todos
 });
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ requestAPI }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

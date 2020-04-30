@@ -1,12 +1,32 @@
-import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 import * as actionTypes from "./actionTypes";
 
+export const requestAPI = () => (dispatch, getState) => {
+  axios
+    .get("http://localhost:8000/")
+    .then(res => {
+      const { todos } = getState();
+      const newTodos = [...todos];
+
+      res.data.todos.forEach(todo => newTodos.push(new Array(todo)));
+
+      dispatch({
+        type: actionTypes.ADD_TODO,
+        todo: newTodos
+      });
+    })
+    .catch(err => console.log(err));
+};
+
 export const addNewTodo = todo => (dispatch, getState) => {
   const { todos } = getState();
+  const newTodo = [{ children: [...todo] }];
+
+  axios.post("http://localhost:8000/", newTodo).then(res => console.log(res));
 
   const newTodos = [...todos];
-  newTodos.push([{ id: uuidv4(), children: [...todo] }]);
+  newTodos.push(todo);
 
   dispatch({
     type: actionTypes.ADD_TODO,
