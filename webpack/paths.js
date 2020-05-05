@@ -1,7 +1,6 @@
 const path = require("path");
 
 module.exports = {
-  controllerPath: path.resolve(__dirname, "../", "controller"),
   entryPath: path.resolve(__dirname, "../", "src/app/index.jsx"),
   node_modules: path.resolve(__dirname, "../", "node_modules"),
   outputCssFolder: "css",

@@ -2,7 +2,7 @@ const { ProgressPlugin, DefinePlugin } = require("webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const commonPaths = require("./paths");
-const { PORT, DATABASE, DATABASE_PASSWORD } = require("../config");
+const { PORT, DATABASE, DATABASE_PASSWORD } = require("../config.env");
 
 module.exports = {
   entry: {
