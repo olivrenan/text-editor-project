@@ -1,18 +1,21 @@
+import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import Modal from "react-modal";
 import React, { useState, useEffect } from "react";
-import { bindActionCreators } from "redux";
 
+import { login } from "./services/auth/actions";
+import { requestAPI } from "./services/todos/actions";
 import EditorModal from "./components/EditorModal";
 import RenderTodos from "./components/RenderTodos";
-import { requestAPI } from "./store/actions";
 
-const App = ({ todos, requestAPI }) => {
+const App = ({ auth, todos, requestAPI, login }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    requestAPI();
+    login("admin@gmail.com", "test1234").then(() => requestAPI());
   }, []);
+
+  console.log(auth);
 
   return (
     <div className="app">
@@ -46,11 +49,9 @@ const App = ({ todos, requestAPI }) => {
   );
 };
 
-const mapStateToProps = ({ todos }) => ({
-  todos
-});
+const mapStateToProps = ({ todos, auth }) => ({ todos: todos.todos, auth });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ requestAPI }, dispatch);
+  bindActionCreators({ requestAPI, login }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

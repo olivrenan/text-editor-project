@@ -7,7 +7,7 @@ import { withHistory } from "slate-history";
 import isHotkey from "is-hotkey";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 
-import { addNewTodo, updateTodo } from "../store/actions";
+import { addNewTodo, updateTodo } from "../services/todos/actions";
 import { BlockButton, MarkButton } from "../helpers/Toggle";
 import { ELEMENT_TAGS, HOTKEYS, TEXT_TAGS } from "../helpers/Keys";
 import Element from "./Element";

@@ -6,7 +6,7 @@ import { withHistory } from "slate-history";
 import Modal from "react-modal";
 import React, { useCallback, useMemo, useState } from "react";
 
-import { deleteTodo } from "../store/actions";
+import { deleteTodo } from "../services/todos/actions";
 import EditorModal from "./EditorModal";
 import Element from "./Element";
 import Leaf from "./Leaf";

@@ -2,28 +2,31 @@ import axios from "axios";
 
 import * as actionTypes from "./actionTypes";
 
-export const requestAPI = () => (dispatch, getState) => {
-  axios
-    .get("http://localhost:8000/")
-    .then(res => {
-      const { todos } = getState();
-      const newTodos = [...todos];
+export const requestAPI = () => async (dispatch, getState) => {
+  const { todos } = getState().todos;
+  const newTodos = [...todos];
 
-      res.data.todos.forEach(todo => newTodos.push(new Array(todo)));
+  try {
+    const result = await axios.get("http://localhost:8000/api/todos");
 
-      dispatch({
-        type: actionTypes.ADD_TODO,
-        todo: newTodos
-      });
-    })
-    .catch(err => console.log(err));
+    result.data.todos.forEach(todo => newTodos.push(new Array(todo)));
+
+    dispatch({
+      type: actionTypes.ADD_TODO,
+      todo: newTodos
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const addNewTodo = todo => (dispatch, getState) => {
   const { todos } = getState();
   const newTodo = [{ children: [...todo] }];
 
-  axios.post("http://localhost:8000/", newTodo).then(res => console.log(res));
+  axios
+    .post("http://localhost:8000/api/todos", newTodo)
+    .then(res => console.log(res));
 
   const newTodos = [...todos];
   newTodos.push(todo);
@@ -38,7 +41,7 @@ export const deleteTodo = todo => (dispatch, getState) => {
   const { todos } = getState();
   const newTodos = [...todos].filter(element => todo[0]._id !== element[0]._id);
 
-  axios.delete(`http://localhost:8000/${todo[0]._id}`);
+  axios.delete(`http://localhost:8000/api/todos/${todo[0]._id}`);
 
   dispatch({
     type: actionTypes.DELETE_TODO,
@@ -50,7 +53,7 @@ export const updateTodo = updatedTodo => (dispatch, getState) => {
   const { todos } = getState();
   let newTodos;
 
-  axios.patch(`http://localhost:8000/${updatedTodo[0]._id}`, {
+  axios.patch(`http://localhost:8000/api/todos/${updatedTodo[0]._id}`, {
     children: [...updatedTodo[0].children]
   });
 

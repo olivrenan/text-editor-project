@@ -1,9 +1,9 @@
 import { applyMiddleware, compose, createStore } from "redux";
 import reduxThunk from "redux-thunk";
-import reducer from "./reducer";
+import reducers from "../services/reducers";
 
 const store = createStore(
-  reducer,
+  reducers,
   compose(
     applyMiddleware(reduxThunk),
     typeof window === "object" &&

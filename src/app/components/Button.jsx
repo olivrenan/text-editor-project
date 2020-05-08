@@ -1,6 +1,6 @@
 import React from "react";
 
-const Button = React.forwardRef(({ className, active, ...props }, ref) => {
+const Button = React.forwardRef(({ active, ...props }, ref) => {
   const name = () => {
     if (active) return "#000";
     return "#fff";
