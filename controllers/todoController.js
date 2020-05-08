@@ -1,89 +1,59 @@
+const AppError = require("../helpers/appError");
+const catchAsync = require("../helpers/catchAsync");
 const Todo = require("../models/todoModel");
 
-exports.getAllTodos = async (req, res) => {
-  try {
-    const todos = await Todo.find();
+exports.getAllTodos = catchAsync(async (req, res, next) => {
+  const todos = await Todo.find();
 
-    res.status(200).json({
-      status: "success",
-      length: todos.length,
-      todos
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  res.status(200).json({
+    status: "success",
+    length: todos.length,
+    todos
+  });
+});
 
-exports.createTodo = async (req, res) => {
-  try {
-    const todo = await Todo.create(req.body);
+exports.createTodo = catchAsync(async (req, res, next) => {
+  const todo = await Todo.create(req.body);
 
-    res.status(201).json({
-      status: "success",
-      todo
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+  res.status(201).json({
+    status: "success",
+    todo
+  });
+});
 
-exports.getOneTodo = async (req, res) => {
-  try {
-    const todo = await Todo.findById(req.params.id);
+exports.getOneTodo = catchAsync(async (req, res, next) => {
+  const todo = await Todo.findById(req.params.id);
 
-    if (!todo)
-      return res.status(404).json({
-        status: "Invalid Todo ID"
-      });
+  if (!todo) return next(new AppError("No document found with that ID", 404));
 
-    res.status(200).json({
-      status: "success",
-      todo
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({
-      status: "Invalid Todo ID"
-    });
-  }
-};
+  res.status(200).json({
+    status: "success",
+    todo
+  });
+});
 
-exports.deleteOneTodo = async (req, res) => {
-  try {
-    await Todo.findByIdAndDelete(req.params.id);
+exports.deleteOneTodo = catchAsync(async (req, res, next) => {
+  const todo = await Todo.findByIdAndDelete(req.params.id);
 
-    res.status(204).json({
-      status: "success",
-      data: null
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({
-      status: "Invalid Todo ID"
-    });
-  }
-};
+  if (!todo) return next(new AppError("No document found with that ID", 404));
 
-exports.updateOneTodo = async (req, res) => {
-  try {
-    const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true
-    });
+  res.status(204).json({
+    status: "success",
+    data: null
+  });
+});
 
-    if (!updatedTodo)
-      return res.status(404).json({
-        status: "Invalid Todo ID"
-      });
+exports.updateOneTodo = catchAsync(async (req, res, next) => {
+  const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
 
-    res.status(201).json({
-      status: "success",
-      updatedTodo
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(404).json({
-      status: "Invalid Todo ID"
-    });
-  }
-};
+  if (!updatedTodo)
+    return next(new AppError("No document found with that ID", 404));
+
+  res.status(201).json({
+    status: "success",
+    updatedTodo
+  });
+});
