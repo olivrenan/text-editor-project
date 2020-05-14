@@ -4,10 +4,18 @@ import * as actionTypes from "./actionTypes";
 
 export const requestAPI = () => async (dispatch, getState) => {
   const { todos } = getState().todos;
+  const { _id } = getState().auth;
   const newTodos = [...todos];
 
   try {
-    const result = await axios.get("http://localhost:8000/api/todos");
+    const result = await axios({
+      method: "get",
+      url: `http://localhost:8000/api/todos/${_id}`,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      withCredentials: true
+    });
 
     result.data.todos.forEach(todo => newTodos.push(new Array(todo)));
 
@@ -16,17 +24,29 @@ export const requestAPI = () => async (dispatch, getState) => {
       todo: newTodos
     });
   } catch (error) {
-    console.log(error);
+    console.log("ACTION requestAPI ERROR: ", error.response?.data);
   }
 };
 
-export const addNewTodo = todo => (dispatch, getState) => {
-  const { todos } = getState();
+export const addNewTodo = todo => async (dispatch, getState) => {
+  const { todos } = getState().todos;
+  const { _id } = getState().auth;
   const newTodo = [{ children: [...todo] }];
 
-  axios
-    .post("http://localhost:8000/api/todos", newTodo)
-    .then(res => console.log(res));
+  try {
+    await axios({
+      method: "post",
+      url: "http://localhost:8000/api/todos",
+      data: {
+        user: _id,
+        children: newTodo[0].children
+      },
+      withCredentials: true
+    });
+  } catch (error) {
+    console.log("ACTION addNewTodo ERROR: ", error.response?.data);
+    return;
+  }
 
   const newTodos = [...todos];
   newTodos.push(todo);
@@ -37,11 +57,20 @@ export const addNewTodo = todo => (dispatch, getState) => {
   });
 };
 
-export const deleteTodo = todo => (dispatch, getState) => {
-  const { todos } = getState();
+export const deleteTodo = todo => async (dispatch, getState) => {
+  const { todos } = getState().todos;
   const newTodos = [...todos].filter(element => todo[0]._id !== element[0]._id);
 
-  axios.delete(`http://localhost:8000/api/todos/${todo[0]._id}`);
+  try {
+    await axios({
+      method: "delete",
+      url: `http://localhost:8000/api/todos/${todo[0]._id}`,
+      withCredentials: true
+    });
+  } catch (error) {
+    console.log("ACTION deleteTodo ERROR: ", error.response?.data);
+    return;
+  }
 
   dispatch({
     type: actionTypes.DELETE_TODO,
@@ -49,13 +78,23 @@ export const deleteTodo = todo => (dispatch, getState) => {
   });
 };
 
-export const updateTodo = updatedTodo => (dispatch, getState) => {
-  const { todos } = getState();
+export const updateTodo = updatedTodo => async (dispatch, getState) => {
+  const { todos } = getState().todos;
   let newTodos;
 
-  axios.patch(`http://localhost:8000/api/todos/${updatedTodo[0]._id}`, {
-    children: [...updatedTodo[0].children]
-  });
+  try {
+    await axios({
+      method: "patch",
+      url: `http://localhost:8000/api/todos/${updatedTodo[0]._id}`,
+      data: {
+        children: updatedTodo[0].children
+      },
+      withCredentials: true
+    });
+  } catch (error) {
+    console.log("ACTION updatedTodo ERROR: ", error.response?.data);
+    return;
+  }
 
   if (updatedTodo[0].children[0].children[0].text === "")
     newTodos = [...todos].filter(todo => todo[0]._id !== updatedTodo[0]._id);

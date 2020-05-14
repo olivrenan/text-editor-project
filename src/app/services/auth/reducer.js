@@ -1,11 +1,11 @@
 import { LOGIN, LOGOUT } from "./actionTypes";
 
 const initialState = {
-  jwt: null,
+  _id: null,
   email: null,
-  role: null,
   name: null,
-  _id: null
+  role: null,
+  jwt: null
 };
 
 export default (state = initialState, action) => {
@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
     case LOGIN:
       return { ...state, ...action.data };
     case LOGOUT:
-      return { jwt: null, email: null };
+      return { ...initialState };
     default:
       return { ...state };
   }
