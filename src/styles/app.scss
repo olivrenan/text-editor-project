@@ -1,15 +1,14 @@
 .app {
-  align-items: center;
-  background-color: $light-grey;
   display: flex;
   flex-direction: column;
   min-height: 80vh;
 
   .content {
+    margin-top: 12vh;
+
     .render-todos {
       column-count: 5;
       padding: 0 4rem;
-      margin-bottom: 8rem;
     }
   }
 
@@ -43,7 +42,6 @@
 
   &:hover {
     box-shadow: 0.6rem 1rem 1.2rem 0 rgba(0, 0, 0, 0.5);
-    transform: translateY(-0.1rem);
 
     .options-icon {
       visibility: visible;

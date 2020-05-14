@@ -1,6 +1,6 @@
 header {
   background-color: $main-color;
-  position: relative;
+  position: fixed;
   display: flex;
   justify-content: space-between;
   font-size: 2rem;
@@ -9,22 +9,15 @@ header {
   padding: 2rem;
   user-select: none;
   width: 100vw;
+  z-index: 9000;
 
   h1 {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: "Times New Roman", Times, serif;
     position: relative;
     font-weight: 300;
     top: -15px;
     left: 25px;
     font-size: 4rem;
-  }
-
-  .app--owner {
-    color: $darker-grey;
-    position: relative;
-    right: -80rem;
-    top: 4.2rem;
-    font-size: 0.8rem;
   }
 
   .user-actions {
@@ -33,8 +26,8 @@ header {
     margin-right: 2rem;
     font-size: 1.8rem;
 
-    p {
-      margin: 0 1rem;
+    .logout:hover {
+      cursor: pointer;
     }
   }
 }
