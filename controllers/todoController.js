@@ -3,7 +3,12 @@ const catchAsync = require("../helpers/catchAsync");
 const Todo = require("../models/todoModel");
 
 exports.getAllTodos = catchAsync(async (req, res, next) => {
-  const todos = await Todo.find();
+  const todos = await Todo.find({ user: req.params.userId });
+
+  console.log(req.params.userId);
+
+  if (!req.params.userId)
+    return next(new AppError("The request must have the user ID", 400));
 
   res.status(200).json({
     status: "success",

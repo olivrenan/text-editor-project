@@ -14,10 +14,9 @@ const router = express.Router();
 
 router.use(protect);
 
-router
-  .route("/")
-  .get(getAllTodos)
-  .post(createTodo);
+router.route("/:userId").get(getAllTodos);
+
+router.route("/").post(createTodo);
 
 router
   .route("/:id")
