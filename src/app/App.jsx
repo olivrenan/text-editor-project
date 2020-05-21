@@ -4,9 +4,11 @@ import { Switch, Route } from "react-router";
 import React, { useEffect } from "react";
 
 import { isLoggedIn } from "./services/auth/actions";
-import RootPage from "./pages/RootPage";
-import LoginPage from "./pages/LoginPage";
 import { requestAPI } from "./services/todos/actions";
+import LoginPage from "./pages/LoginPage";
+import MePage from "./pages/MePage";
+import RegisterPage from "./pages/RegisterPage";
+import RootPage from "./pages/RootPage";
 
 const App = ({ isLoggedIn, requestAPI }) => {
   useEffect(() => {
@@ -24,8 +26,15 @@ const App = ({ isLoggedIn, requestAPI }) => {
       <Switch>
         <Route
           path="/"
+          exact
           component={() => (isLogged ? <RootPage /> : <LoginPage />)}
         />
+        <Route path="/register">
+          <RegisterPage />
+        </Route>
+        <Route path="/me">
+          <MePage />
+        </Route>
       </Switch>
     </div>
   );

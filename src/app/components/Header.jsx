@@ -1,23 +1,36 @@
 import { bindActionCreators } from "redux";
 import { connect, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { Route } from "react-router";
 import React from "react";
 
 import { logout } from "../services/auth/actions";
 
-const Header = ({ logout }) => {
+const Header = ({ logout, title }) => {
   const isLogged = useSelector(({ auth }) => auth.jwt !== null);
 
   return (
-    <header>
-      <h1>Todo List Application</h1>
-      {isLogged ? (
-        <div className="user-actions">
-          <div className="logout" onClick={() => logout()}>
-            Logout
+    <Route>
+      <header>
+        <h1>
+          <Link to="/" className="link">
+            Todo List Application
+          </Link>
+        </h1>
+        <h2>{title}</h2>
+        {isLogged ? (
+          <div className="user-actions">
+            <Link to="/" className="logout link" onClick={() => logout()}>
+              Logout
+            </Link>
+            <div>|</div>
+            <Link to="/me" className="link">
+              Me
+            </Link>
           </div>
-        </div>
-      ) : null}
-    </header>
+        ) : null}
+      </header>
+    </Route>
   );
 };
 

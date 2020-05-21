@@ -3,9 +3,8 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 
 export const requestAPI = () => async (dispatch, getState) => {
-  const { todos } = getState().todos;
   const { _id } = getState().auth;
-  const newTodos = [...todos];
+  const newTodos = [];
 
   try {
     const result = await axios({
@@ -20,7 +19,7 @@ export const requestAPI = () => async (dispatch, getState) => {
     result.data.todos.forEach(todo => newTodos.push(new Array(todo)));
 
     dispatch({
-      type: actionTypes.ADD_TODO,
+      type: actionTypes.FETCH_TODO,
       todo: newTodos
     });
   } catch (error) {
