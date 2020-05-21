@@ -1,30 +1,40 @@
 header {
+  align-items: center;
   background-color: $main-color;
-  position: fixed;
   display: flex;
-  justify-content: space-between;
   font-size: 2rem;
   height: 8vh;
+  justify-content: space-between;
   margin: 0 0 3rem 0;
   padding: 2rem;
+  position: fixed;
   user-select: none;
   width: 100vw;
   z-index: 9000;
 
   h1 {
     font-family: "Times New Roman", Times, serif;
-    position: relative;
-    font-weight: 300;
-    top: -15px;
-    left: 25px;
     font-size: 4rem;
+    font-weight: 300;
+    left: 25px;
+    position: relative;
+  }
+
+  h2 {
+    color: $darker-grey;
+    margin-right: 18rem;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 3rem;
+    font-weight: 300;
   }
 
   .user-actions {
     color: $darker-grey;
     display: flex;
-    margin-right: 2rem;
+    justify-content: space-evenly;
     font-size: 1.8rem;
+    margin-right: 2rem;
+    width: 15rem;
 
     .logout:hover {
       cursor: pointer;
