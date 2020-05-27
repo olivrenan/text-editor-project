@@ -33,7 +33,7 @@ export const addNewTodo = todo => async (dispatch, getState) => {
   const newTodo = [{ children: [...todo] }];
 
   try {
-    await axios({
+    const result = await axios({
       method: "post",
       url: "http://localhost:8000/api/todos",
       data: {
@@ -42,18 +42,18 @@ export const addNewTodo = todo => async (dispatch, getState) => {
       },
       withCredentials: true
     });
+    const todoId = result.data.todo._id;
+
+    const newTodos = [...todos];
+    newTodos.push([{ _id: todoId, children: newTodo[0].children, user: _id }]);
+
+    dispatch({
+      type: actionTypes.ADD_TODO,
+      todo: newTodos
+    });
   } catch (error) {
     console.log("ACTION addNewTodo ERROR: ", error.response?.data);
-    return;
   }
-
-  const newTodos = [...todos];
-  newTodos.push(todo);
-
-  dispatch({
-    type: actionTypes.ADD_TODO,
-    todo: newTodos
-  });
 };
 
 export const deleteTodo = todo => async (dispatch, getState) => {
