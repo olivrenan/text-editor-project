@@ -3,8 +3,8 @@ import Modal from "react-modal";
 import React, { useState } from "react";
 
 import EditorModal from "../components/EditorModal";
+import Grid from "../components/Grid";
 import Header from "../components/Header";
-import RenderTodos from "../components/RenderTodos";
 
 const RootPage = ({ todos }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -20,11 +20,7 @@ const RootPage = ({ todos }) => {
         >
           <EditorModal handleClose={() => setIsOpen(false)} />
         </Modal>
-        <div className="render-todos">
-          {todos.map((todo, index) => (
-            <RenderTodos todo={todo} key={index} />
-          ))}
-        </div>
+        <Grid todos={todos} />
       </div>
       <button className="action-button" onClick={() => setIsOpen(true)}>
         <i className="material-icons">add</i>

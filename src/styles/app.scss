@@ -3,12 +3,45 @@
   flex-direction: column;
   min-height: 80vh;
 
+  &__page {
+    overflow: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: $main-color $darker-grey;
+  }
+
+  &__page::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &__page::-webkit-scrollbar-track {
+    background: $darker-grey;
+  }
+
+  &__page::-webkit-scrollbar-thumb {
+    background-color: $main-color;
+  }
+
   .content {
     margin-top: 12vh;
+    height: 90vh;
 
     .render-todos {
-      column-count: 5;
       padding: 0 4rem;
+    }
+
+    .react-grid-item {
+      background-color: #fff;
+      box-shadow: 0.3rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+
+      .editor {
+        box-shadow: none;
+        height: inherit;
+      }
+
+      &:hover {
+        box-shadow: 0.6rem 1rem 1.2rem 0 rgba(0, 0, 0, 0.5);
+      }
     }
   }
 
@@ -31,26 +64,19 @@
 }
 
 .editor {
-  background-color: #fff;
-  box-shadow: 0.3rem 0.5rem 1rem 0 rgba(0, 0, 0, 0.5);
-  display: inline-grid;
   padding: 1.6rem;
   font-size: 1.4rem;
   margin: 0rem 1rem 4rem 1rem;
   transition: all 0.4s;
-  width: 30rem;
 
   &:hover {
-    box-shadow: 0.6rem 1rem 1.2rem 0 rgba(0, 0, 0, 0.5);
-
     .options-icon {
       visibility: visible;
     }
   }
 
   &-text {
-    padding: 3rem;
-    max-width: 28rem;
+    padding: 1rem 2rem;
   }
 
   [data-slate-editor] > * + * {

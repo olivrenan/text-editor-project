@@ -50,10 +50,6 @@ module.exports = {
     "react/jsx-filename-extension": ["warn", { extensions: [".jsx"] }],
     "react/jsx-first-prop-new-line": ["warn", "multiline"],
     "react/jsx-handler-names": "off",
-    "react/jsx-handler-names": [
-      "warn",
-      { eventHandlerPrefix: "handle", eventHandlerPropPrefix: "on" }
-    ],
     "react/jsx-indent-props": "off",
     "react/jsx-indent": ["warn", 2],
     "react/jsx-key": "error",
@@ -66,6 +62,7 @@ module.exports = {
     "react/prop-types": "off",
     "react/require-default-props": "off",
     "react/self-closing-comp": ["warn", { component: true, html: false }],
+    "react/static-property-placement": "off",
     "react/sort-comp": [
       1,
       {

@@ -26,6 +26,7 @@ select {
 html {
   // This defines what 1rem is
   font-size: 62.5%; // 1rem = 10px
+  overflow: hidden;
 }
 
 body {
@@ -39,4 +40,5 @@ body {
 #root {
   background-color: $light-grey;
   min-height: 100vh;
+  overflow: hidden;
 }
