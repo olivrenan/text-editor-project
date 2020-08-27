@@ -1,102 +1,159 @@
 import _ from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import React, { PureComponent } from "react";
+import React from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 
 import RenderTodos from "./RenderTodos";
-import { setElementPosition } from "../services/positions/actions";
+import { updatePosition } from "../services/todos/actions";
 
 const ReactGridLayout = WidthProvider(RGL);
 
-class Grid extends PureComponent {
-  static defaultProps = {
-    isDraggable: true,
-    isResizable: true,
-    autoSize: true,
-    rowHeight: 60,
-    onLayoutChange: function() {},
-    cols: 12
-  };
+// class Grid extends PureComponent {
+//   static defaultProps = {
+//     isDraggable: true,
+//     isResizable: true,
+//     autoSize: true,
+//     rowHeight: 60,
+//     onLayoutChange: function() {},
+//     cols: 12
+//   };
 
-  constructor(props) {
-    super(props);
+//   constructor(props) {
+//     super(props);
 
-    this.onResizeStop = this.onResizeStop.bind(this);
-    this.onDragStop = this.onDragStop.bind(this);
-  }
+//     this.onResizeStop = this.onResizeStop.bind(this);
+//     this.onDragStop = this.onDragStop.bind(this);
+//   }
 
-  generateDOM() {
-    // Generate items with properties from the layout, rather than pass the layout directly
-    const layout = this.generateLayout();
-    const { todos } = this.props;
+//   UNSAFE_componentWillMount() {
+//     console.log("mounted");
+//   }
 
-    return todos.map((todo, i) => {
-      return (
-        <div key={i} data-grid={layout[i]}>
-          <RenderTodos todo={todo} />
-        </div>
-      );
-    });
-  }
+//   generateDOM() {
+//     // Generate items with properties from the layout, rather than pass the layout directly
+//     const layout = this.generateLayout();
 
-  generateLayout() {
-    const previousPositions = JSON.parse(
-      window.localStorage.getItem("positions")
-    );
+//     return this.props.todos.map((todo, i) => (
+//       <div key={todo[0]._id} data-grid={layout[i]}>
+//         <RenderTodos todo={todo} />
+//       </div>
+//     ));
+//   }
 
-    if (previousPositions) {
-      return previousPositions;
-    }
+//   generateLayout() {
+//     const layout = this.props.todos.map((item, i) => {
+//       const y = _.result(this.props.p, "y") || Math.ceil(Math.random() * 4) + 1;
 
-    const p = this.props;
-    const { todos } = this.props;
+//       const previousPositions = {
+//         ...item[0].positions,
+//         i: item[0]._id
+//       };
 
-    const layout = _.map(new Array(todos.length), function(item, i) {
-      const y = _.result(p, "y") || Math.ceil(Math.random() * 4) + 1;
+//       return {
+//         x: previousPositions?.x || (i * 2) % 12,
+//         y: previousPositions?.y || Math.floor(i / 6) * y,
+//         w: previousPositions?.w || 2,
+//         h: previousPositions?.h || 4,
+//         i: previousPositions.i
+//       };
+//     });
+
+//     return layout;
+//   }
+
+//   onResizeStop(arrayPos, gridItem) {
+//     arrayPos.forEach(item => {
+//       if (item.i === gridItem.i) {
+//         this.props.updatePosition(item);
+//       }
+//     });
+//   }
+
+//   onDragStop(arrayPos, gridItem) {
+//     arrayPos.forEach(item => {
+//       if (item.i === gridItem.i) {
+//         this.props.updatePosition(item);
+//       }
+//     });
+//   }
+
+//   render() {
+//     return (
+//       <ReactGridLayout
+//         onResizeStop={this.onResizeStop}
+//         onDragStop={this.onDragStop}
+//         {...this.props}
+//       >
+//         {this.generateDOM()}
+//       </ReactGridLayout>
+//     );
+//   }
+// }
+
+const Grid = props => {
+  const generateLayout = () => {
+    const layout = props.todos.map((item, i) => {
+      const y = _.result(props.p, "y") || Math.ceil(Math.random() * 4) + 1;
+
+      const previousPositions = {
+        ...item[0].positions,
+        i: item[0]._id
+      };
+
       return {
-        x: (i * 2) % 12,
-        y: Math.floor(i / 6) * y,
-        w: 2,
-        h: 4,
-        i: i.toString()
+        x: previousPositions?.x || (i * 2) % 12,
+        y: previousPositions?.y || Math.floor(i / 6) * y,
+        w: previousPositions?.w || 2,
+        h: previousPositions?.h || 4,
+        i: previousPositions.i
       };
     });
 
     return layout;
-  }
+  };
 
-  onLayoutChange(layout) {
-    this.props.onLayoutChange(layout);
-  }
+  const generateDOM = () => {
+    const layout = generateLayout();
 
-  onResizeStop(event) {
-    this.props.setElementPosition(event);
-  }
+    return props.todos.map((todo, i) => (
+      <div key={todo[0]._id} data-grid={layout[i]}>
+        <RenderTodos todo={todo} />
+      </div>
+    ));
+  };
 
-  onDragStop(event) {
-    this.props.setElementPosition(event);
-  }
+  const onResizeStop = (arrayPos, gridItem) => {
+    arrayPos.forEach(item => {
+      if (item.i === gridItem.i) {
+        props.updatePosition(item);
+      }
+    });
+  };
 
-  render() {
-    return (
-      <ReactGridLayout
-        onLayoutChange={this.onLayoutChange}
-        onResizeStop={this.onResizeStop}
-        onDragStop={this.onDragStop}
-        {...this.props}
-      >
-        {this.generateDOM()}
-      </ReactGridLayout>
-    );
-  }
-}
+  const onDragStop = (arrayPos, gridItem) => {
+    arrayPos.forEach(item => {
+      if (item.i === gridItem.i) {
+        props.updatePosition(item);
+      }
+    });
+  };
 
-const mapStateToProps = ({ positions }) => ({
-  positions: positions.positions
-});
+  return (
+    <ReactGridLayout
+      measureBeforeMount
+      onResizeStop={(arrayPos, gridItem) => onResizeStop(arrayPos, gridItem)}
+      onDragStop={(arrayPos, gridItem) => onDragStop(arrayPos, gridItem)}
+      {...props}
+    >
+      {generateDOM()}
+    </ReactGridLayout>
+  );
+};
+
+const mapStateToProps = ({ todos }) => ({ todos: todos.todos });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ setElementPosition }, dispatch);
+  bindActionCreators({ updatePosition }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Grid);

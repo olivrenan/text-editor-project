@@ -1,4 +1,5 @@
 import { bindActionCreators } from "redux";
+import { ToastContainer } from "react-toastify";
 import { connect, useSelector } from "react-redux";
 import { Switch, Route } from "react-router";
 import React, { useEffect } from "react";
@@ -14,6 +15,8 @@ const App = ({ isLoggedIn, requestAPI }) => {
   useEffect(() => {
     isLoggedIn();
   }, []);
+
+  const CloseButton = () => <i className="material-icons">close</i>;
 
   const isLogged = useSelector(({ auth }) => auth.jwt !== null);
 
@@ -36,6 +39,7 @@ const App = ({ isLoggedIn, requestAPI }) => {
           <MePage />
         </Route>
       </Switch>
+      <ToastContainer closeButton={CloseButton} />
     </div>
   );
 };

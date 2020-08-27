@@ -1,4 +1,10 @@
-import { ADD_TODO, UPDATE_TODO, DELETE_TODO, FETCH_TODO } from "./actionTypes";
+import {
+  ADD_TODO,
+  UPDATE_TODO,
+  UPDATE_POSITION,
+  DELETE_TODO,
+  FETCH_TODO
+} from "./actionTypes";
 
 const initialState = {
   todos: []
@@ -11,6 +17,8 @@ export default (state = initialState, action) => {
     case FETCH_TODO:
       return { todos: action.todo };
     case UPDATE_TODO:
+      return { ...state, todos: action.todo };
+    case UPDATE_POSITION:
       return { ...state, todos: action.todo };
     case DELETE_TODO:
       return { ...state, todos: action.todo };

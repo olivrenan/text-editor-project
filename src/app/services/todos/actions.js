@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import * as actionTypes from "./actionTypes";
+import Notify from "../../helpers/notify";
 
 export const requestAPI = () => async (dispatch, getState) => {
   const { _id } = getState().auth;
@@ -23,7 +24,9 @@ export const requestAPI = () => async (dispatch, getState) => {
       todo: newTodos
     });
   } catch (error) {
-    console.log("ACTION requestAPI ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION requestAPI ERROR: ", error.response?.data);
+    Notify.error("Error fetching information from the database");
   }
 };
 
@@ -52,7 +55,9 @@ export const addNewTodo = todo => async (dispatch, getState) => {
       todo: newTodos
     });
   } catch (error) {
-    console.log("ACTION addNewTodo ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION addNewTodo ERROR: ", error.response?.data);
+    Notify.error("Error adding a todo");
   }
 };
 
@@ -67,7 +72,9 @@ export const deleteTodo = todo => async (dispatch, getState) => {
       withCredentials: true
     });
   } catch (error) {
-    console.log("ACTION deleteTodo ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION deleteTodo ERROR: ", error.response?.data);
+    Notify.error("Error deleting a todo");
     return;
   }
 
@@ -91,7 +98,9 @@ export const updateTodo = updatedTodo => async (dispatch, getState) => {
       withCredentials: true
     });
   } catch (error) {
-    console.log("ACTION updatedTodo ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION updatedTodo ERROR: ", error.response?.data);
+    Notify.error("Error updating a todo");
     return;
   }
 
@@ -104,6 +113,56 @@ export const updateTodo = updatedTodo => async (dispatch, getState) => {
 
   dispatch({
     type: actionTypes.UPDATE_TODO,
+    todo: newTodos
+  });
+};
+
+export const updatePosition = updatedPositions => async (
+  dispatch,
+  getState
+) => {
+  const { todos } = getState().todos;
+
+  try {
+    await axios({
+      method: "patch",
+      url: `http://localhost:8000/api/todos/${updatedPositions.i}`,
+      data: {
+        positions: {
+          x: updatedPositions.x,
+          y: updatedPositions.y,
+          w: updatedPositions.w,
+          h: updatedPositions.h
+        }
+      },
+      withCredentials: true
+    });
+  } catch (error) {
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION updatedTodo ERROR: ", error.response?.data);
+    Notify.error("Error updating a todo's positions");
+  }
+
+  const selectedTodo = [...todos].filter(
+    todo => updatedPositions.i === todo[0]._id
+  );
+  selectedTodo[0][0].positions = {
+    x: updatedPositions.x,
+    y: updatedPositions.y,
+    w: updatedPositions.w,
+    h: updatedPositions.h
+  };
+
+  const newTodos = [...todos].map(todo => {
+    if (todo[0]._id === selectedTodo[0][0]._id) {
+      return selectedTodo[0];
+    }
+
+    return todo;
+  });
+
+  dispatch({
+    type: actionTypes.UPDATE_POSITION,
     todo: newTodos
   });
 };

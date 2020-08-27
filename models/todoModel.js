@@ -5,6 +5,9 @@ const todoSchema = new mongoose.Schema({
     type: [Object],
     required: true
   },
+  positions: {
+    type: Object
+  },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",

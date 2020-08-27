@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import * as actionTypes from "./actionTypes";
+import Notify from "../../helpers/notify";
 
 export const login = (userEmail, password) => async (dispatch, getState) => {
   const { _id, jwt, email, role, name } = getState().auth;
@@ -27,12 +28,21 @@ export const login = (userEmail, password) => async (dispatch, getState) => {
           JSON.stringify({ _id, jwt, email, role, name })
         );
 
+        Notify.success("Login successfully!");
+
         dispatch({
           type: actionTypes.LOGIN,
           data: { _id, jwt, email, name, role }
         });
       } catch (error) {
-        console.log("ACTION Login ERROR: ", error.response?.data);
+        if (process.env.NODE_ENV === "development")
+          console.log("ACTION Login ERROR: ", error.response?.data);
+
+        if (error.response?.status === 401) {
+          Notify.error("Unauthorized login");
+        } else {
+          Notify.error("Error logging in!");
+        }
       }
     } else {
       dispatch({
@@ -69,7 +79,9 @@ export const logout = () => async dispatch => {
       type: actionTypes.LOGOUT
     });
   } catch (error) {
-    console.log("ACTION Login ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION Login ERROR: ", error.response?.data);
+    Notify.error("Error logging out");
   }
 };
 
@@ -98,6 +110,8 @@ export const signup = (
       JSON.stringify({ _id, jwt, email, role, name })
     );
 
+    Notify.success("Registred user!");
+
     dispatch({
       type: actionTypes.SIGNUP,
       data: { name, email, jwt, _id, role }
@@ -106,7 +120,9 @@ export const signup = (
     const { status } = result.data;
     return status;
   } catch (error) {
-    console.log("ACTION Signup ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION Signup ERROR: ", error.response?.data);
+    Notify.error("Error when registering");
   }
 };
 
@@ -135,7 +151,9 @@ export const getMe = () => async (dispatch, getState) => {
       data: { name, email }
     });
   } catch (error) {
-    console.log("ACTION getMe ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION getMe ERROR: ", error.response?.data);
+    Notify.error("Error fetching user data");
   }
 };
 
@@ -151,12 +169,15 @@ export const updateUser = (name, email) => async dispatch => {
       withCredentials: true
     });
 
+    Notify.success("Data updated successfully!");
+
     dispatch({
       type: actionTypes.UPDATEUSER,
       data: { name, email }
     });
   } catch (error) {
     console.log("ACTION updateUser ERROR: ", error.response?.data);
+    Notify.error("Error updating user data");
   }
 };
 
@@ -176,8 +197,12 @@ export const updatePassword = (
       withCredentials: true
     });
 
+    Notify.success("Password updated successfully!");
+
     console.log(result);
   } catch (error) {
-    console.log("ACTION updatePassword ERROR: ", error.response?.data);
+    if (process.env.NODE_ENV === "development")
+      console.log("ACTION updatePassword ERROR: ", error.response?.data);
+    Notify.error("Error updating user password");
   }
 };

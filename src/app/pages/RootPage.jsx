@@ -6,7 +6,7 @@ import EditorModal from "../components/EditorModal";
 import Grid from "../components/Grid";
 import Header from "../components/Header";
 
-const RootPage = ({ todos }) => {
+const RootPage = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
 
   return (
@@ -20,7 +20,14 @@ const RootPage = ({ todos }) => {
         >
           <EditorModal handleClose={() => setIsOpen(false)} />
         </Modal>
-        <Grid todos={todos} />
+        <Grid
+          isDraggable
+          isResizable
+          autoSize
+          rowHeight={60}
+          onLayoutChange={() => {}}
+          cols={12}
+        />
       </div>
       <button className="action-button" onClick={() => setIsOpen(true)}>
         <i className="material-icons">add</i>
@@ -29,6 +36,4 @@ const RootPage = ({ todos }) => {
   );
 };
 
-const mapStateToProps = ({ todos }) => ({ todos: todos.todos });
-
-export default connect(mapStateToProps)(RootPage);
+export default connect()(RootPage);
