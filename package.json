@@ -7,8 +7,8 @@
     "start:dev": "cross-env NODE_ENV=development webpack-dev-server --progress --port 3001 --open",
     "start:prod": "npm run build && npm run serve",
     "start:server": "nodemon server.js",
-    "serve": "node server/index.js",
-    "build": "cross-env NODE_ENV=production webpack --progress --profile --colors",
+    "serve": "node server.js",
+    "build": "cross-env NODE_ENV=production webpack --progress --port 3001 --profile --colors",
     "lint": "eslint ./src"
   },
   "author": "Renan Oliveira",
@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
+    "compression-webpack-plugin": "^5.0.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
