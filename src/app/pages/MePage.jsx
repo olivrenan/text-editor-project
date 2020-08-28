@@ -16,6 +16,10 @@ const MePage = ({ auth, updateUser, updatePassword, getMe }) => {
     getMe();
   }, []);
 
+  const keyPressHandler = (e, actionFunc) => {
+    if (e.key === "Enter") actionFunc();
+  };
+
   return (
     <div className="me-page">
       <Header title="User Configurations" />
@@ -29,6 +33,7 @@ const MePage = ({ auth, updateUser, updatePassword, getMe }) => {
             id="username"
             value={name}
             onChange={e => setName(e.target.value)}
+            onKeyPress={e => keyPressHandler(e, () => updateUser(name, email))}
           />
           <label htmlFor="email">Email:</label>
           <input
@@ -37,6 +42,7 @@ const MePage = ({ auth, updateUser, updatePassword, getMe }) => {
             id="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
+            onKeyPress={e => keyPressHandler(e, () => updateUser(name, email))}
           />
           <button className="btn" onClick={() => updateUser(name, email)}>
             Update Me
@@ -50,6 +56,11 @@ const MePage = ({ auth, updateUser, updatePassword, getMe }) => {
             name="password"
             id="password"
             onChange={e => setCurrentPassword(e.target.value)}
+            onKeyPress={e =>
+              keyPressHandler(e, () =>
+                updatePassword(currentPassword, newPassword, newPasswordConfirm)
+              )
+            }
           />
           <label htmlFor="newPassword">New Password:</label>
           <input
@@ -57,6 +68,11 @@ const MePage = ({ auth, updateUser, updatePassword, getMe }) => {
             name="newPassword"
             id="newPassword"
             onChange={e => setNewPassword(e.target.value)}
+            onKeyPress={e =>
+              keyPressHandler(e, () =>
+                updatePassword(currentPassword, newPassword, newPasswordConfirm)
+              )
+            }
           />
           <label htmlFor="newPasswordConfirm">Confirm New Password:</label>
           <input
@@ -64,6 +80,11 @@ const MePage = ({ auth, updateUser, updatePassword, getMe }) => {
             name="newPasswordConfirm"
             id="newPasswordConfirm"
             onChange={e => setNewPasswordConfirm(e.target.value)}
+            onKeyPress={e =>
+              keyPressHandler(e, () =>
+                updatePassword(currentPassword, newPassword, newPasswordConfirm)
+              )
+            }
           />
           <button
             className="btn"

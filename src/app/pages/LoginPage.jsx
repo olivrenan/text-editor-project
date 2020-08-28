@@ -30,6 +30,9 @@ const LoginPage = ({ login }) => {
                   name="email"
                   id="email"
                   onChange={e => setEmail(e.target.value)}
+                  onKeyPress={e => {
+                    if (e.key === "Enter") login(email, password);
+                  }}
                 />
                 <label htmlFor="password">Password:</label>
                 <input
@@ -37,6 +40,9 @@ const LoginPage = ({ login }) => {
                   name="password"
                   id="password"
                   onChange={e => setPassword(e.target.value)}
+                  onKeyPress={e => {
+                    if (e.key === "Enter") login(email, password);
+                  }}
                 />
               </div>
 

@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import React from "react";
@@ -94,18 +93,20 @@ const ReactGridLayout = WidthProvider(RGL);
 const Grid = props => {
   const generateLayout = () => {
     const layout = props.todos.map((item, i) => {
-      const y = _.result(props.p, "y") || Math.ceil(Math.random() * 4) + 1;
+      const y = Math.ceil(Math.random() * 4) + 1;
 
       const previousPositions = {
         ...item[0].positions,
         i: item[0]._id
       };
 
+      console.log(previousPositions);
+
       return {
-        x: previousPositions?.x || (i * 2) % 12,
-        y: previousPositions?.y || Math.floor(i / 6) * y,
-        w: previousPositions?.w || 2,
-        h: previousPositions?.h || 4,
+        x: previousPositions.x || (i * 2) % 12,
+        y: previousPositions.y || Math.floor(i / 6) * y,
+        w: previousPositions.w || 2,
+        h: previousPositions.h || 4,
         i: previousPositions.i
       };
     });
@@ -123,15 +124,7 @@ const Grid = props => {
     ));
   };
 
-  const onResizeStop = (arrayPos, gridItem) => {
-    arrayPos.forEach(item => {
-      if (item.i === gridItem.i) {
-        props.updatePosition(item);
-      }
-    });
-  };
-
-  const onDragStop = (arrayPos, gridItem) => {
+  const layoutChangeHandler = (arrayPos, gridItem) => {
     arrayPos.forEach(item => {
       if (item.i === gridItem.i) {
         props.updatePosition(item);
@@ -142,8 +135,12 @@ const Grid = props => {
   return (
     <ReactGridLayout
       measureBeforeMount
-      onResizeStop={(arrayPos, gridItem) => onResizeStop(arrayPos, gridItem)}
-      onDragStop={(arrayPos, gridItem) => onDragStop(arrayPos, gridItem)}
+      onResizeStop={(arrayPos, gridItem) =>
+        layoutChangeHandler(arrayPos, gridItem)
+      }
+      onDragStop={(arrayPos, gridItem) =>
+        layoutChangeHandler(arrayPos, gridItem)
+      }
       {...props}
     >
       {generateDOM()}

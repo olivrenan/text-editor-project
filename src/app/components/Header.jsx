@@ -20,12 +20,12 @@ const Header = ({ logout, title }) => {
         <h2>{title}</h2>
         {isLogged ? (
           <div className="user-actions">
-            <Link to="/" className="logout link" onClick={() => logout()}>
-              Logout
+            <Link to="/me" className="link">
+              User
             </Link>
             <div>|</div>
-            <Link to="/me" className="link">
-              Me
+            <Link to="/" className="logout link" onClick={() => logout()}>
+              Logout
             </Link>
           </div>
         ) : null}

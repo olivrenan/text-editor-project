@@ -3,12 +3,6 @@
   flex-direction: column;
   min-height: 80vh;
 
-  &__page {
-    overflow: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: $main-color $darker-grey;
-  }
-
   &__page::-webkit-scrollbar {
     width: 12px;
   }
@@ -22,8 +16,8 @@
   }
 
   .content {
-    margin-top: 12vh;
-    height: 90vh;
+    margin: 10vh 0;
+    height: max-content;
 
     .render-todos {
       padding: 0 4rem;

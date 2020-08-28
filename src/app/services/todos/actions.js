@@ -123,6 +123,8 @@ export const updatePosition = updatedPositions => async (
 ) => {
   const { todos } = getState().todos;
 
+  console.log(updatedPositions);
+
   try {
     await axios({
       method: "patch",

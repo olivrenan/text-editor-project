@@ -187,7 +187,7 @@ export const updatePassword = (
   passwordConfirm
 ) => async () => {
   try {
-    const result = await axios({
+    await axios({
       method: "patch",
       url: "http://localhost:8000/api/users/updateMyPassword",
       headers: {
@@ -198,8 +198,6 @@ export const updatePassword = (
     });
 
     Notify.success("Password updated successfully!");
-
-    console.log(result);
   } catch (error) {
     if (process.env.NODE_ENV === "development")
       console.log("ACTION updatePassword ERROR: ", error.response?.data);
