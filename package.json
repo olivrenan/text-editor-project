@@ -14,7 +14,7 @@
   "author": "Renan Oliveira",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "compression-webpack-plugin": "^5.0.1",
     "cookie-parser": "^1.4.5",
