@@ -18,7 +18,7 @@ export const login = (userEmail, password) => async (dispatch, getState) => {
             "Content-Type": "application/json"
           },
           data: { email: userEmail, password },
-          withCredentials: true
+          "Access-Control-Allow-Credentials": true
         });
 
         const jwt = result.data.token;
@@ -99,7 +99,7 @@ export const signup = (
         "Content-Type": "application/json"
       },
       data: { name, email, password, passwordConfirm },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
 
     const jwt = result.data.token;
@@ -136,7 +136,7 @@ export const getMe = () => async (dispatch, getState) => {
       headers: {
         "Content-Type": "application/json"
       },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
 
     const { _id, email, role, name } = result.data.data.data;
@@ -166,7 +166,7 @@ export const updateUser = (name, email) => async dispatch => {
         "Content-Type": "application/json"
       },
       data: { name, email },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
 
     Notify.success("Data updated successfully!");
@@ -194,7 +194,7 @@ export const updatePassword = (
         "Content-Type": "application/json"
       },
       data: { passwordCurrent, password, passwordConfirm },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
 
     Notify.success("Password updated successfully!");

@@ -4,7 +4,7 @@ import * as actionTypes from "./actionTypes";
 import Notify from "../../helpers/notify";
 
 export const requestAPI = () => async (dispatch, getState) => {
-  const { _id } = getState().auth;
+  const { _id, jwt } = getState().auth;
   const newTodos = [];
 
   try {
@@ -12,9 +12,10 @@ export const requestAPI = () => async (dispatch, getState) => {
       method: "get",
       url: `http://localhost:8000/api/todos/${_id}`,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`
       },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
 
     result.data.todos.forEach(todo => newTodos.push(new Array(todo)));
@@ -32,18 +33,22 @@ export const requestAPI = () => async (dispatch, getState) => {
 
 export const addNewTodo = todo => async (dispatch, getState) => {
   const { todos } = getState().todos;
-  const { _id } = getState().auth;
+  const { _id, jwt } = getState().auth;
   const newTodo = [{ children: [...todo] }];
 
   try {
     const result = await axios({
       method: "post",
       url: "http://localhost:8000/api/todos",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`
+      },
       data: {
         user: _id,
         children: newTodo[0].children
       },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
     const todoId = result.data.todo._id;
 
@@ -63,13 +68,18 @@ export const addNewTodo = todo => async (dispatch, getState) => {
 
 export const deleteTodo = todo => async (dispatch, getState) => {
   const { todos } = getState().todos;
+  const { jwt } = getState().auth;
   const newTodos = [...todos].filter(element => todo[0]._id !== element[0]._id);
 
   try {
     await axios({
       method: "delete",
       url: `http://localhost:8000/api/todos/${todo[0]._id}`,
-      withCredentials: true
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`
+      },
+      "Access-Control-Allow-Credentials": true
     });
   } catch (error) {
     if (process.env.NODE_ENV === "development")
@@ -86,16 +96,21 @@ export const deleteTodo = todo => async (dispatch, getState) => {
 
 export const updateTodo = updatedTodo => async (dispatch, getState) => {
   const { todos } = getState().todos;
+  const { jwt } = getState().auth;
   let newTodos;
 
   try {
     await axios({
       method: "patch",
       url: `http://localhost:8000/api/todos/${updatedTodo[0]._id}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`
+      },
       data: {
         children: updatedTodo[0].children
       },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
   } catch (error) {
     if (process.env.NODE_ENV === "development")
@@ -122,6 +137,7 @@ export const updatePosition = updatedPositions => async (
   getState
 ) => {
   const { todos } = getState().todos;
+  const { jwt } = getState().auth;
 
   console.log(updatedPositions);
 
@@ -129,6 +145,10 @@ export const updatePosition = updatedPositions => async (
     await axios({
       method: "patch",
       url: `http://localhost:8000/api/todos/${updatedPositions.i}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwt}`
+      },
       data: {
         positions: {
           x: updatedPositions.x,
@@ -137,7 +157,7 @@ export const updatePosition = updatedPositions => async (
           h: updatedPositions.h
         }
       },
-      withCredentials: true
+      "Access-Control-Allow-Credentials": true
     });
   } catch (error) {
     if (process.env.NODE_ENV === "development")
